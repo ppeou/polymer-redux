@@ -38,6 +38,9 @@
     "Polymer": true,
     "ShadyDOM": true,
     "ShadyCSS": true,
+    "store": true,
+    "Redux": true,
+    "ReduxMixin": true,
     "JSCompiler_renameProperty": true
   }
 }

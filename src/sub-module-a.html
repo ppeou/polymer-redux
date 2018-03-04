@@ -1,0 +1,50 @@
+<link rel="import" href="../node_modules/polymer/polymer-element.html">
+
+<dom-module id="sub-module-a">
+  <template>
+    <style>
+      .clickable {
+        cursor: pointer;
+      }
+    </style>
+    <h1>[[title]] </h1>
+    <p>seed: [[counter]]</p>
+    <button on-click="addCounter" data-seed="1">Add</button>
+    <button on-click="addCounter" data-seed="-1">Minus</button>
+
+  </template>
+  <script>
+    class SubModuleA extends ReduxMixin(Polymer.Element) {
+      constructor() {
+        super();
+        this.seed = 0;
+        this.serviceId = 0;
+      }
+
+      static get is() { return 'sub-module-a'; }
+
+      static get properties() {
+        return {
+          counter: {
+            type: String,
+            statePath: 'counter.value'
+          },
+          title: String,
+        };
+      }
+
+      static get observers() {
+        return [];
+      }
+
+      addCounter(e) {
+        const {currentTarget: {dataset: {seed}}} = e;
+        window.actions.counter.add(Number(seed));
+      }
+    }
+
+    window.customElements.define(SubModuleA.is, SubModuleA);
+
+
+  </script>
+</dom-module>
