@@ -1,0 +1,36 @@
+<link rel="import" href="node_modules/polymer/polymer-element.html">
+
+<dom-module id="polymer-element-yarner">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `polymer-element-yarner`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class PolymerElementYarner extends Polymer.Element {
+      static get is() { return 'polymer-element-yarner'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'polymer-element-yarner'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(PolymerElementYarner.is, PolymerElementYarner);
+  </script>
+</dom-module>
