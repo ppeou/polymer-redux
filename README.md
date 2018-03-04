@@ -1,4 +1,4 @@
-# \<redux-element\>
+# \<polymer-element-yarner\>
 
 
 
