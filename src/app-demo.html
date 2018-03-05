@@ -9,24 +9,22 @@
 
 <!--<link rel="import" href="../node_modules/polymer-redux/polymer-redux.html">-->
 <link rel="import" href="../node_modules/polymer/polymer-element.html">
-<script src="js/caller-redux.js"></script>
-<script src="../node_modules/redux/dist/redux.min.js"></script>
+<script src="../node_modules/redux/dist/redux.js"></script>
+<script src="js/polymer-redux.js"></script>
 <script src="js/store-reducer-action.js"></script>
-
-
 
 <link rel="import" href="sub-module-a.html">
 
 
 <dom-module id="app-demo">
   <template>
-
-    <sub-module-a id="sma" title="Count Seed"></sub-module-a>
-    <sub-module-a id="smb" title="Count Candy"></sub-module-a>
+    <sub-module-a id="sma" public title="Based Seed"></sub-module-a>
+    <sub-module-a id="smb" redux-id="sma" title="Count Seed"></sub-module-a>
+    <sub-module-a id="smc" redux-id="smb" title="Count Candy"></sub-module-a>
 
   </template>
   <script>
-    class AppDemo extends ReduxMixin(Polymer.Element) {
+    class AppDemo extends Polymer.Element {
       static get is() {
         return 'app-demo';
       }

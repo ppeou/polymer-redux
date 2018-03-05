@@ -3,17 +3,40 @@
 <dom-module id="sub-module-a">
   <template>
     <style>
-      .clickable {
-        cursor: pointer;
+      :host {
+        display: block;
+        border: solid 1px #ccc;
+        position: relative;
+        margin-bottom: 1em;
       }
+      .stamp {
+        color: #ccc;
+        font-size: 0.8em;
+        margin: 0;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 0.2em;
+      }
+      h1 {margin: 0;}
     </style>
-    <h1>[[title]] </h1>
-    <p>seed: [[counter]]</p>
-    <button on-click="addCounter" data-seed="1">Add</button>
-    <button on-click="addCounter" data-seed="-1">Minus</button>
-
+    <div>
+      <p class="stamp">sub-module-a</p>
+      <h1>[[title]] </h1>
+      <p>Public seed: [[publicCounter]]</p>
+      <p>Private seed: [[privateCounter]]</p>
+      <br/>
+      <p>Public Timestamp: [[publicTimestamp]]</p>
+      <p>Private Timestamp: [[privateTimestamp]]</p>
+      <button on-click="addCounter" data-seed="1">[[_isPublic(public)]] Add</button>
+      <button on-click="addCounter" data-seed="-1">[[_isPublic(public)]] Minus</button>
+      <button on-click="updateTimestamp">[[_isPublic(public)]] Update Timestamp</button>
+    </div>
   </template>
+
   <script>
+    let idx = 0;
+
     class SubModuleA extends ReduxMixin(Polymer.Element) {
       constructor() {
         super();
@@ -25,11 +48,26 @@
 
       static get properties() {
         return {
-          counter: {
+          privateCounter: {
+            type: Number,
+            statePath: 'counter.value',
+            private: true,
+          },
+          publicCounter: {
+            type: Number,
+            statePath: 'counter.value',
+          },
+          privateTimestamp: {
             type: String,
-            statePath: 'counter.value'
+            statePath: 'timestamp.value',
+            private: true,
+          },
+          publicTimestamp: {
+            type: String,
+            statePath: 'timestamp.value',
           },
           title: String,
+          public: Boolean,
         };
       }
 
@@ -37,9 +75,25 @@
         return [];
       }
 
+      _isPublic(isPublic) {
+        return isPublic ? 'Public' : '';
+      }
+
       addCounter(e) {
-        const {currentTarget: {dataset: {seed}}} = e;
-        window.actions.counter.add(Number(seed));
+        let {currentTarget: {dataset: {seed}}} = e;
+        seed = Number(seed);
+        if (this.public) {
+          this.dispatch({action: 'counter.add', value: seed});
+        } else {
+          this.privateDispatch({action: 'counter.add', value: seed});
+        }
+      }
+      updateTimestamp(e) {
+        if (this.public) {
+          this.dispatch({type: 'UPDATE'});
+        } else {
+          this.privateDispatch({type: 'UPDATE'});
+        }
       }
     }
 
